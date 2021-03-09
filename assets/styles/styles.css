@@ -7,6 +7,17 @@ body {
     margin: 0 auto;
 }
 
+caption{
+    caption-side: top;
+}
+
+tr:nth-child(odd) {
+    background: #CCC;
+}
+tr:nth-child(even) {
+    background: #FFF;
+}
+
 /* .flex-form{
     display: flex;
     margin: 0 auto;

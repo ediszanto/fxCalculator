@@ -6,11 +6,11 @@ let pipValuesUSD = {
   GBP: 0.0,
 };
 let pipValuesGBP = {
-    USD: 10.0,
+    USD: 0.0,
     JPY: 0.0,
     CAD: 0.0,
     CHF: 0.0,
-    GBP: 0.0,
+    GBP: 10.0,
   };
 const btnSubmit = document.querySelector('.btn-success');
 const form = document.querySelector('#inputRisk');
@@ -53,12 +53,16 @@ function riskCalculator(pipsRisk, pipValue, dollarRisk){
     return dollarRisk / (pipsRisk * pipValue);
 }
 
-function renderHeader(maxPipRisk, table){
+function renderHeader(maxPipRisk, table, currency){
+    const caption = document.createElement('caption');
+    caption.textContent = `${currency} - Account`;
+    table.appendChild(caption);
+
     const tableRow = document.createElement('tr');
-    table.appendChild(tableRow);
+    table.append(tableRow);
 
     const first = document.createElement('th');
-    table.querySelector('tr').appendChild(first);
+    table.querySelector('tr').append(first);
 
     for(let index = 5; index <= maxPipRisk ; index++){
         const headerItem = document.createElement('th');
@@ -87,34 +91,43 @@ function renderTableContent(table, risk, pipValues){
     }
 }
 
-function renderTable(risk, table){
+function renderTable(risk, table, pipValues, currency){
     //console.log(table);
-    renderHeader(30, table);
-    renderTableContent(table, risk, pipValuesUSD);
+    renderHeader(30, table, currency);
+    renderTableContent(table, risk, pipValues);
 }
 
+function deleteTables(){
+    tableUSD.innerHTML = "";
+    tableGBP.innerHTML = "";
+}
 
-
-async function app() {
+async function app(event) {
   const baseUrl = "https://fxmarketapi.com/apilive";
   const apiKey = "c2gkBAqRIn9CDdqEEyRY";
-  const pairs = "USDCHF,USDJPY,USDCAD,USDGBP";
-  const url = `${baseUrl}?api_key=${apiKey}&currency=${pairs}`;
-  const result = await sendHttpRequest(url);
+  const pairsUSD= "USDCHF,USDJPY,USDCAD,USDGBP";
+  const pairsGBP= "GBPCHF,GBPJPY,GBPCAD,GBPUSD";
+  const url_USD = `${baseUrl}?api_key=${apiKey}&currency=${pairsUSD}`;
+  const url_GBP = `${baseUrl}?api_key=${apiKey}&currency=${pairsGBP}`;
 
-  calculatePipValues(result, pipValuesUSD);
+  const resultUSD = await sendHttpRequest(url_USD);
+  const resultGBP = await sendHttpRequest(url_GBP)
 
+  calculatePipValues(resultUSD, pipValuesUSD);
+  calculatePipValues(resultGBP, pipValuesGBP);
+    console.log(pipValuesGBP);
+  event.preventDefault();
+  const riskValue = document.querySelector('#inputRisk').value;
+
+  deleteTables(); // if there are tables rendered deletes them
+
+  renderTable(riskValue, tableUSD, pipValuesUSD, 'USD');
+  renderTable(riskValue, tableGBP, pipValuesGBP, 'GBP');
 }
 
 
 
-btnSubmit.addEventListener('click', async (event) => {
-  event.preventDefault();
-  const riskValue = document.querySelector('#inputRisk').value;
-  await app();
-  tableUSD.innerHTML = "";
-  renderTable(riskValue, tableUSD);
-});
+btnSubmit.addEventListener('click', event => {app(event)});
 
 /* 
     XXX/USD = $10/PIP
