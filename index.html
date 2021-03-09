@@ -5,20 +5,36 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Document</title>
+     <link rel="stylesheet" href="assets/styles/styles.css">
      <script src="assets/scripts/app.js" defer></script>
      <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
  </head>
  <body>
-    <div class="container">
-        <table class="table table-striped">
-            <tr class="table-light">
-                <td class="table-secondary">1</td>
-                <td class="table-secondary">2</td>
-                <td class="table-secondary">3</td>
-            </tr>
-        </table>
+    <div class="container-xxl">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+              <label for="inputRisk" class="col-form-label">Risk</label>
+            </div>
+            <div class="col-auto">
+                <input type="number" id="inputRisk" class="form-control" autofocus="autofocus">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-success" type="submit">Submit</button>
+            </div>
+        </div>
+
+          <div id="usd" class="table">
+              <table class="table table-striped usd">
+                  
+              </table>
+          </div>
+          <div id="gbp" class="table">
+            <table class="table table-striped gbp">
+                
+            </table>
+        </div>
     </div>
  </body>
  </html>
